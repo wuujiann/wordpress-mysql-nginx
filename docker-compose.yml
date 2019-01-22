@@ -1,0 +1,56 @@
+version: '3.3'
+
+services:
+  nginx-SITE:
+    container_name: nginx-SITE
+    image: nginx:latest
+    ports:
+      - '8083:80'   # SITE external port number 
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./logs/nginx:/var/log/nginx
+      - ./wordpress:/var/www/html
+    depends_on:
+      - wordpress-SITE
+    restart: always
+    networks:
+      - backend-SITE
+
+  mysql-SITE:
+    container_name: mysql-SITE
+    image: mariadb
+    ports:
+      - '3306'
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: SITEroot
+      MYSQL_DATABASE: SITEwordpress
+      MYSQL_USER: SITE
+      MYSQL_PASSWORD: SITEpasswd
+    restart: always
+    networks:
+      - backend-SITE
+
+  wordpress-SITE:
+    container_name: wp-SITE
+    image: wordpress:php7.2-fpm
+    ports:
+      - '9000'
+    volumes:
+      - ./wordpress:/var/www/html
+    environment:
+      WORDPRESS_DB_HOST: mysql-SITE
+      WORDPRESS_DB_USER: SITE
+      WORDPRESS_DB_PASSWORD: SITEpasswd
+      WORDPRESS_DB_NAME: SITEwordpress
+      WORDPRESS_TABLE_PREFIX: "wp_"
+    depends_on:
+      - mysql-SITE
+    restart: always
+    networks:
+      - backend-SITE
+networks:
+  backend-SITE:
+    external: true

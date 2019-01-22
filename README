@@ -1,0 +1,24 @@
+<< To deploy >>
+
+Files to edit before deployment:
+   - docker-compose.yml
+   - nginx/wordpress.conf
+
+1. Edit docker-compose.yml and replace "SITE" with your own site name
+   and modify the SITE's externally exposed port.
+   For eaxmple, your site is http://example.com, replace 'SITE' with 'example'.
+
+2. Edit nginx/wordpress.conf, and replace SITE with your own site name.
+
+3. docker-compose backend-SITE  (replace SITE with your own site name)
+
+4. Run 'docker-compose config' (to check if any error in yml file).
+
+5. sudo find . -type d -exec chmod 777 {} \; ; sudo find . -type f -exec chmod 666 {} \;
+
+6. Run 'docker-compose up -d'
+
+<< To clean up >>
+
+1. docker-compose down
+2. cleanup.sh
