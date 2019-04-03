@@ -10,7 +10,7 @@ Files to edit before deployment:
 
 2. Edit nginx/wordpress.conf, and replace SITE with your own site name.
 
-3. docker-compose backend-SITE  (replace SITE with your own site name)
+3. docker network create backend-SITE  (replace SITE with your own site name)
 
 4. Run 'docker-compose config' (to check if any error in yml file).
 
